@@ -1,0 +1,39 @@
+{
+	"rules": {
+		"no-empty-interface": true,
+
+		"await-promise": true,
+		"no-duplicate-super": true,
+		"no-duplicate-switch-case": true,
+		"no-duplicate-variable": true,
+		"no-unused-expression": true,
+		"no-var-keyword": true,
+		"prefer-object-spread": true,
+		"triple-equals": true,
+		"use-isnan": true,
+		"no-console": true,
+		
+		"deprecation": true,
+		"indent": [true, "tabs", 4],
+		"no-duplicate-imports": true,
+		"prefer-const": true,
+		"prefer-readonly": true,
+		"trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+
+		"align": true,
+		"arrow-return-shorthand": true,
+		"binary-expression-operand-order": true,
+		"class-name": true,
+		"import-spacing": true,
+		"interface-name": [true, "always-prefix"],
+		"new-parens": true,
+		"no-trailing-whitespace": true,
+		"object-literal-shorthand": true,
+		"one-variable-per-declaration": true,
+		"quotemark": [true, "single"],
+		"semicolon": [true, "never"],
+		"space-before-function-paren": [true, "always"],
+		"variable-name": [true, "ban-keywords", "check-format"],
+		"whitespace": true
+	}
+}

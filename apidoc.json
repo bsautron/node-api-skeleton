@@ -1,0 +1,9 @@
+{
+	"name": "API Documentation",
+	"title": "API Documentation",
+	"description": "This is the api documentaion",
+	"version": "1.0.0",
+	"template": {
+		"forceLanguage": "en"
+	}
+}
