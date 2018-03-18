@@ -5,12 +5,11 @@ import * as joi from 'joi'
 import * as _ from 'lodash'
 import logger from './common/logger'
 import conf from '../conf'
-import pingRoutes from './ping/ping-routes'
-import { IRoute } from './common/interface-route'
+import { IRoute } from './common/route-interface'
 
 const log = logger.namespace('server')
 const defaultRoutes = [
-	...pingRoutes,
+	// ...exampleRoutes
 ]
 
 /**
@@ -63,9 +62,7 @@ function getBodyValidation (body: any, bodyValidation: any): any {
  * It will concat the error message, and the path for the error
  * We asume that each body is an object
  */
-function getHumanReadableErrorValidationMessage (error) {
-	if (!error) return 'Unknow'
-
+export function getHumanReadableErrorValidationMessage (error): string {
 	const firstError = error.details[0]
 	return `${firstError.message}. Path = "${firstError.path.join('.')}"`
 }
@@ -82,10 +79,10 @@ function getHumanReadableErrorValidationMessage (error) {
  * @param server Application Server
  * @param route The route definition
  */
-function setRoute (server: restify.Server, route: IRoute) {
+function setRoute (server: restify.Server, route: IRoute): void {
 	// The validation return an error if data is not valid, return a body correctly parsed
 	const validationMiddelware = wrapControllerFunction((req, res, next) => {
-		const requestBody = req.body || {} // All body must be an json in my API
+		const requestBody = req.body || {} // All body must be a json in my API
 		const bodyValidate = getBodyValidation(requestBody, _.get(route, 'validation.body'))
 
 		if (bodyValidate.error) return next(new restifyErrors.BadRequestError({
@@ -127,10 +124,10 @@ export function appInitializer (additionalRoutes: IRoute[] = []): restify.Server
 	routesInitializer(server, [...additionalRoutes, ...defaultRoutes]) // Set all routes
 
 	// Log to the console only Internal Errors (Debug is more easier)
-	server.on('InternalServer', (req, res, err, cb) => {
-		log(err)
-		res.send(err)
-	})
+	// server.on('InternalServer', (req, res, err, cb) => {
+	// 	log(err)
+	// 	res.send(err)
+	// })
 
 	return server
 }

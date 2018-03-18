@@ -8,12 +8,20 @@
     "watch": "DEBUG='node-api-skeleton:*' nodemon index.ts --exec ts-node",
     "build": "tsc -p tsconfig.json",
     "serve": "node dist/index.js",
+    "clean": "jscpd --path modules --languages typescript",
     "lint": "tslint -p tslint.json",
     "lint:fix": "tslint --fix -p tslint.json",
-    "test:unit": "mocha --require ts-node/register --recursive ./test/**/*-unit.ts",
-    "test:behavior": "mocha --require ts-node/register --recursive ./test/**/*-behavior.ts",
-    "test": "npm run test:unit && npm run test:behavior",
-    "doc": "apidoc -i modules/ -f '.*-routes.ts$' && echo 'Open ./doc/index.html' in your browser"
+    "test": "NODE_ENV=test npm run test:unit && npm run test:behavior",
+    "test:unit": "NODE_ENV=test mocha --require ts-node/register --recursive ./test/**/*-unit.ts",
+    "test:behavior": "NODE_ENV=test mocha --require ts-node/register --recursive ./test/**/*-behavior.ts",
+    "test:coverage": "NODE_ENV=test nyc --include modules/ --check-coverage --lines 90 npm test",
+    "doc": "apidoc -i modules/ -f '.*-routes.ts$' -e modules/example/ && echo 'Open ./doc/index.html' in your browser"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm lint && npm run test:unit",
+      "pre-push": "npm run test:coverage"
+    }
   },
   "keywords": [],
   "author": "Bruno Sautron <sautron.brunojj@gmail.com> (http://whoisbruno.com)",
@@ -43,14 +51,44 @@
     "@types/request": "^2.47.0",
     "@types/restify": "^5.0.7",
     "@types/restify-errors": "^4.3.2",
+    "@types/should": "^13.0.0",
+    "@types/sinon": "^4.3.0",
     "@types/supertest": "^2.0.4",
     "apidoc": "^0.17.6",
-    "chai": "^4.1.2",
+    "husky": "^0.15.0-rc.9",
+    "jscpd": "^0.6.17",
     "mocha": "^5.0.0",
     "nodemon": "^1.14.12",
+    "nyc": "^11.6.0",
+    "should": "^13.2.1",
+    "sinon": "^4.4.6",
     "supertest": "^3.0.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1"
+  },
+  "nyc": {
+    "include": [
+      "modules/*.ts",
+      "modules/**/*.ts"
+    ],
+    "exclude": [
+      "coverage/**",
+      "test/**",
+      "dist/**",
+      "**/*interface.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "json",
+      "html"
+    ],
+    "all": true
   }
 }
